@@ -103,7 +103,7 @@ int main (int argc, char *argv[])
 	if ( status != SGX_SUCCESS ) {
 		switch(status) {
 		case SGX_ERROR_NO_PRIVILEGE:
-			fprintf(stderr, "could not stat %s\n", EFIVARS_PATH);
+			fprintf(stderr, "could not examin the EFI filesystem\n");
 			break;
 		case SGX_ERROR_INVALID_PARAMETER:
 		case SGX_ERROR_UNEXPECTED:
@@ -159,7 +159,6 @@ int main (int argc, char *argv[])
 		switch(status) {
 		case SGX_ERROR_NO_PRIVILEGE:
 			printf("You may need to rerun this utility as root\n");
-			fprintf(stderr, "%s: no permission\n", EFIVARS_PATH);
 			break;
 		case SGX_ERROR_INVALID_PARAMETER:
 		case SGX_ERROR_UNEXPECTED:
@@ -206,6 +205,7 @@ sgx_status_t sgx_is_capable (int *sgx_capable)
 	/* Check to see if the Software Control Interface is available */
 
 	if ( stat(EFIVAR_EPCBIOS, &sb) == -1 ) {
+		perror(EFIVAR_EPCBIOS);
 		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
 		*sgx_capable = 0;
 		return SGX_SUCCESS;
@@ -247,6 +247,7 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 		{
 			/* We have /sys/firmware/efi but not efivars */
 
+			perror(EFIVARS_PATH);
 			switch (errno) {
 			case EACCES:
 				return SGX_ERROR_NO_PRIVILEGE;
@@ -258,6 +259,7 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 			}
 		}
 	} else {
+		perror(EFIFS_PATH);
 		switch (errno) {
 		case EACCES:
 			return SGX_ERROR_NO_PRIVILEGE;
@@ -280,6 +282,7 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 
 		if ( stat("/boot/efi", &sb) == 0 ) *sgx_device_status= SGX_DISABLED;
 		else {
+			perror("/boot/efi");
 			switch(errno) {
 			case ENOENT:
 			case ENOTDIR:
@@ -304,6 +307,7 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 	 */
 
 	if ( stat(EFIVAR_EPCBIOS, &sb) == -1 ) {
+		perror(EFIVAR_EPCBIOS);
 		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
 
 		/* No SCI is present so we can't do a s/w enabled */
@@ -319,6 +323,7 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 	 */
 
 	if ( stat(EFIVAR_EPCSW, &sb) == -1 ) {
+		perror(EFIVAR_EPCSW);
 		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
 
 		/* The software enable hasn't been attempted yet. */
@@ -453,6 +458,7 @@ sgx_status_t sgx_cap_enable_device (sgx_device_status_t *sgx_device_status)
 
 	fefivar= fopen(EFIVAR_EPCBIOS, "r");
 	if ( fefivar == NULL ) {
+		perror(EFIVAR_EPCBIOS);
 		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
 
 		return SGX_ERROR_UNEXPECTED;
@@ -482,6 +488,7 @@ sgx_status_t sgx_cap_enable_device (sgx_device_status_t *sgx_device_status)
 
 	fefivar= fopen(EFIVAR_EPCSW, "w");
 	if ( fefivar == NULL ) {
+		perror(EFIVAR_EPCSW);
 		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
 
 		return SGX_ERROR_UNEXPECTED;
