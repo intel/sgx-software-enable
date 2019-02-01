@@ -169,7 +169,7 @@ int main (int argc, char *argv[])
 		return 1;
 	}
 
-	printf("Software enable is complete. Please reboot your system to finish\n");
+	printf("Software enable has been set. Please reboot your system to finish\n");
 	printf("enabling Intel SGX.\n");
 
 	return 0;
@@ -205,8 +205,10 @@ sgx_status_t sgx_is_capable (int *sgx_capable)
 	/* Check to see if the Software Control Interface is available */
 
 	if ( stat(EFIVAR_EPCBIOS, &sb) == -1 ) {
-		perror(EFIVAR_EPCBIOS);
-		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
+		if ( errno == EACCES ) {
+			perror(EFIVAR_EPCBIOS);
+			return SGX_ERROR_NO_PRIVILEGE;
+		}
 		*sgx_capable = 0;
 		return SGX_SUCCESS;
 	}
@@ -247,26 +249,28 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 		{
 			/* We have /sys/firmware/efi but not efivars */
 
-			perror(EFIVARS_PATH);
 			switch (errno) {
 			case EACCES:
+				perror(EFIVARS_PATH);
 				return SGX_ERROR_NO_PRIVILEGE;
 			case ENOENT:
 			case ENOTDIR:
 				break;
 			default:
+				perror(EFIVARS_PATH);
 				return SGX_ERROR_UNEXPECTED;
 			}
 		}
 	} else {
-		perror(EFIFS_PATH);
 		switch (errno) {
 		case EACCES:
+			perror(EFIFS_PATH);
 			return SGX_ERROR_NO_PRIVILEGE;
 		case ENOENT:
 		case ENOTDIR:
 			break;
 		default:
+			perror(EFIFS_PATH);
 			return SGX_ERROR_UNEXPECTED;
 		}
 	} 
@@ -282,7 +286,6 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 
 		if ( stat("/boot/efi", &sb) == 0 ) *sgx_device_status= SGX_DISABLED;
 		else {
-			perror("/boot/efi");
 			switch(errno) {
 			case ENOENT:
 			case ENOTDIR:
@@ -307,8 +310,10 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 	 */
 
 	if ( stat(EFIVAR_EPCBIOS, &sb) == -1 ) {
-		perror(EFIVAR_EPCBIOS);
-		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
+		if ( errno == EACCES ) {
+			perror(EFIVAR_EPCBIOS);
+			return SGX_ERROR_NO_PRIVILEGE;
+		}
 
 		/* No SCI is present so we can't do a s/w enabled */
 
@@ -323,8 +328,10 @@ sgx_status_t sgx_cap_get_status (sgx_device_status_t *sgx_device_status)
 	 */
 
 	if ( stat(EFIVAR_EPCSW, &sb) == -1 ) {
-		perror(EFIVAR_EPCSW);
-		if ( errno == EACCES ) return SGX_ERROR_NO_PRIVILEGE;
+		if ( errno == EACCES ) {
+			perror(EFIVAR_EPCSW);
+			return SGX_ERROR_NO_PRIVILEGE;
+		}
 
 		/* The software enable hasn't been attempted yet. */
 
