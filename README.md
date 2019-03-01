@@ -85,31 +85,31 @@ or failure of the software enabling procedure.
 Result Messages
 ---------------
 
-**Intel SGX is disabled and can be enabled using this utility**
+> **Intel SGX is disabled and can be enabled using this utility**
 
 Your system supports Intel SGX, and is in the "software enable" state. Rerun
 the utility without the `--status` option to enable Intel SGX.
 
-**Intel SGX is already enabled on this system**
+> **Intel SGX is already enabled on this system**
 
 Your system supports Intel SGX and it has already been enabled. No further
 action is necessary.
 
-**Software enable has been set. Please reboot your system.**
+> **Software enable has been set. Please reboot your system.**
 
 The software enabling procedure completed successfully. Once your system is
 rebooted Intel SGX will be available for use.
 
-**You may need to rerun this utility as root**
+> **You may need to rerun this utility as root**
 
 The software enabling procedure could not be performed because you do not
 have write access to the EFI filesystem. Rerun the utility as *root*.
 
-**This CPU does not support Intel SGX**
+> **This CPU does not support Intel SGX**
 
 Your CPU does not support Intel SGX.
 
-**Intel SGX is explicitly disabled on your system**
+> **Intel SGX is explicitly disabled on your system**
 
 Either Intel SGX is explicitly disabled in your BIOS, or your BIOS does not
 support Intel SGX. Reboot your system into the BIOS setup screen and
@@ -118,14 +118,14 @@ support Intel SGX.
 
 Contact your OEM for assistance.
 
-**This processor supports Intel SGX but was booted in legacy mode**
+> **This processor supports Intel SGX but was booted in legacy mode**
 
 A UEFI booted system is required to perform the software enabling procedure.
 If your system has already been built and booted in Legacy mode, you can
 boot a Linux Live CD in UEFI mode and perform the procedure from the Live
 image.
 
-**Intel SGX is explicitly disabled, and your BIOS does not support the "software enable" option**
+> **Intel SGX is explicitly disabled, and your BIOS does not support the "software enable" option**
 
 Your BIOS provides explicit options to enable or disable Intel SGX, and does
 not have a software enable capability. To enable Intel SGX, boot your system
@@ -134,20 +134,20 @@ set the status to "enabled". You do not need this utility.
 
 Contact your OEM for assistance.
 
-**The software enable has been performed on this system and Intel SGX will be enabled after the system is rebooted**
+> **The software enable has been performed on this system and Intel SGX will be enabled after the system is rebooted**
 
 The software enable procedure has already been executed. You need to reboot
 your system for Intel SGX to be enabled for use. You do not need to run this
 utility again.
 
-**I could not attempt the software enable**
+> **I could not attempt the software enable**
 
 Your system supports Intel SGX and is in the software enable state, but the
 software enabling could not be completed because an unexpected error occurred.
 This is almost always the result of a system error. See the accompanying
 error message for clues as to what went wrong.
 
-**I couldn't make sense of your system**
+> **I couldn't make sense of your system**
 
 Something terrible has happened. This message usually means that an unexpected
 error has occurred and is almost always the result of a more serious
