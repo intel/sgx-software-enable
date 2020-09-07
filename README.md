@@ -58,7 +58,7 @@ enabling procedure on your system. You will need write access to the EFI
 filesystem which typically means it must be run as root:
 
 ```
-$ sudo sgx_enable
+$ sudo ./sgx_enable
 ```
 
 *Once the software enabling procedure has completed successfully you will need
