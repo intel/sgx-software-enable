@@ -103,7 +103,7 @@ int main (int argc, char *argv[])
 	if ( status != SGX_SUCCESS ) {
 		switch(status) {
 		case SGX_ERROR_NO_PRIVILEGE:
-			fprintf(stderr, "could not examin the EFI filesystem\n");
+			fprintf(stderr, "could not examine the EFI filesystem\n");
 			break;
 		case SGX_ERROR_INVALID_PARAMETER:
 		case SGX_ERROR_UNEXPECTED:
