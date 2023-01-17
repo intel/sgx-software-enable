@@ -57,7 +57,7 @@ Running the Application
 Usage is:
 
 ```
-usage: sgx-enable [ options ]
+usage: sgx_enable [ options ]
 
 Options:
   -s, --status      Report the enabling status only
